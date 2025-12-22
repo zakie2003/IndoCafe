@@ -1,0 +1,14 @@
+{
+  "name": "indocafe-root",
+  "version": "1.0.0",
+  "description": "Root for IndoCafe Restaurant Management System",
+  "scripts": {
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
