@@ -23,7 +23,17 @@ const Login = () => {
     const result = await login(email, password);
 
     if (result.success) {
-      navigate(from, { replace: true });
+      // Redirect based on role
+      const userRole = result.user?.role; // Ensure login returns user object in result
+      
+      if (userRole === 'SUPER_ADMIN') {
+        navigate('/admin/overview', { replace: true });
+      } else if (userRole === 'OUTLET_MANAGER') {
+        navigate('/manager/live-orders', { replace: true });
+      } else {
+        // Default fallback
+        navigate('/', { replace: true });
+      }
     } else {
       setError(result.message);
       setIsSubmitting(false);
