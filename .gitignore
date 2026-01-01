@@ -31,3 +31,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Dependency locks
+package-lock.json

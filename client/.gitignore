@@ -26,3 +26,6 @@ dist-ssr
 .vercel
 .vercel
 .env*.local
+
+# Dependency locks
+package-lock.json
