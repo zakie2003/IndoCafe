@@ -1,11 +1,12 @@
+import axios from 'axios';
 import api from '../lib/axios';
 
 export const menuService = {
   // Admin: Fetch all global menu items
   getAllMenuItems: async () => {
-    // Assuming GET /api/admin/menu returns all items. 
+    // Assuming GET /api/admin/menu returns all items.
     // If not, this might need to be adjusted to the correct endpoint.
-    const response = await api.get('/api/admin/menu'); 
+    const response = await api.get('/api/admin/menu');
     return response.data;
   },
 
@@ -17,15 +18,11 @@ export const menuService = {
 
   // Admin: Create a new global menu item
   createMenuItem: async (formData) => {
-    // formData should be a FormData object if uploading images, 
-    // or JSON if just data. The prompt mentions "uploads image", 
+    // formData should be a FormData object if uploading images,
+    // or JSON if just data. The prompt mentions "uploads image",
     // so we'll assume FormData and set headers accordingly if needed,
     // but axios handles FormData automatically.
-    const response = await api.post('/api/admin/menu', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await api.post('/api/admin/menu', formData);
     return response.data;
   },
 
@@ -37,5 +34,26 @@ export const menuService = {
       outletId,
     });
     return response.data;
+  },
+
+  // File to Base64 Conversion
+  uploadImageToCloudinary: async (file) => {
+    try {
+      const upload_preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+      const data = new FormData();
+      data.append('file', file);
+
+      data.append('upload_preset', upload_preset);
+      const res = await axios.post(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        data
+      );
+
+      return res.data.secure_url;
+    } catch (error) {
+      // 🔥 THIS is what we need
+      console.error('Cloudinary response:', error.response?.data);
+      throw error;
+    }
   },
 };
